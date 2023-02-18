@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { Category } from './core/interface/category';
-import { CategoryService } from './core/services/category.service';
 
 @Component({
   selector: 'app-root',

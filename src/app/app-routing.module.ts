@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CategoriesComponent } from './pages/categories/categories.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/categories',
+    redirectTo: 'categories',
     pathMatch: 'full'
   },
   {
     path: 'categories',
-    component: CategoriesComponent
-  }
+    loadChildren: () => import('./pages/categories/categories.module').then(m => m.CategoriesModule),
+  },
 ]
 
 @NgModule({
