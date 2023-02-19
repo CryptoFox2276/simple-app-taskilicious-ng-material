@@ -1,0 +1,30 @@
+.container {
+    padding: 2%;
+    
+}
+.content-header {
+    display: flex;
+    padding-bottom: 1%;
+
+    h2 {
+        margin-top: auto;
+        margin-bottom: auto;
+        padding-right: 30px;
+    }
+}
+.content-body {
+    height: 100%;
+    max-height: 600px;
+    overflow: auto;
+
+    .md-button {
+        display: block;
+    }
+}
+ul {
+    list-style-type: none;
+}
+ul li {
+    text-decoration: none;
+    padding-bottom: 1%;
+}

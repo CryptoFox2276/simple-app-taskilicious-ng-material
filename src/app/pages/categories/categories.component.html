@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="content-header">
+    <h2>Choose a category</h2>
+    <div class="create-item">
+      <button mat-fab class="fab-bottom-right" routerLink="create">
+        <mat-icon>
+          <i class="material-icons md-48">add</i>
+        </mat-icon>
+      </button>
+    </div>
+    <div class="menu-item">
+      <button mat-button [matMenuTriggerFor]="menu">Sort</button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onSort(1)">A-Z</button>
+        <button mat-menu-item (click)="onSort(-1)">Z-A</button>
+      </mat-menu>
+    </div>
+  </div>
+
+  <ng-container>
+    <ul>
+      <li *ngFor="let cat of categories">
+        <div routerLink="{{ cat.id }}">
+          <span>{{ cat.name }}</span>
+          <a routerLink="edit/{{ cat.id }}"
+            ><fa-icon [icon]="faPencil"></fa-icon
+          ></a>
+        </div>
+      </li>
+    </ul>
+  </ng-container>
+</div>
