@@ -40,7 +40,7 @@
         <!-- Team Member Column -->
         <ng-container matColumnDef="teammember">
           <th mat-header-cell *matHeaderCellDef>TeamMember</th>
-          <td mat-cell *matCellDef="let element" style="display: flex; justify-content: center; padding:0; margin: 0">
+          <td mat-cell *matCellDef="let element" style="width: 100%; max-width: 25vw;display: flex; justify-content: center; padding:0; margin: 0">
             <div *ngFor="let member_id of element.teamMemberIds" style="display: flex; margin: auto; padding: 0; margin: 0;">
               <img [src]="getAvatar(member_id)" alt="team_member" width="30" height="30" style="margin-right: 5px;"/>
             </div>

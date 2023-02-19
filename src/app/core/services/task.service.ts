@@ -6,6 +6,7 @@ import { Team } from "../interface/team";
 import { MOCKCATEGORIES } from "./mock_data";
 import { delay } from "rxjs/operators";
 import { Observable, tap, catchError, of } from "rxjs";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -21,19 +22,19 @@ export class TaskService {
 
   categories: Category[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private snackbar: MatSnackBar) {}
 
   getTasks(): Observable<TASK[]> {
     return this.http.get<TASK[]>(`${this.apiURL}/tasks`).pipe(
       delay(500),
-      tap((_) => this.log(`fetched tasks`)),
+      tap((_) => console.log(`fetched tasks`)),
       catchError(this.handleError<TASK[]>(`getTasks Error`))
     );
   }
 
   getTask(task_id: Number): Observable<TASK> {
     return this.http.get<TASK>(`${this.apiURL}/tasks/${task_id}`).pipe(
-      tap((_) => this.log(`fetched task id=${task_id}`)),
+      tap((_) => console.log(`fetched task id=${task_id}`)),
       catchError(this.handleError<TASK>(`getCategory id=${task_id}`))
     );
   }
@@ -59,7 +60,7 @@ export class TaskService {
   getTeamMembers() {
     return this.http.get<Team[]>(`${this.apiURL}/team-members`).pipe(
       delay(500),
-      tap((_) => this.log(`fetched tasks`)),
+      tap((_) => console.log(`fetched tasks`)),
       catchError(this.handleError<Team[]>(`getTasks Error`))
     );
   }
@@ -73,6 +74,8 @@ export class TaskService {
 
   /** Log a HeroService message with the MessageService */
   private log(message: string) {
-    console.log(`HeroService: ${message}`);
+    this.snackbar.open(message, "Error", {
+      duration: 3500,
+    });
   }
 }

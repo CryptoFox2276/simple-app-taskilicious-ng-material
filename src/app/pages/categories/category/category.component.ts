@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { Category } from 'src/app/core/interface/category';
 import { CategoryService } from 'src/app/core/services/category.service';
 
@@ -13,6 +14,7 @@ export class CategoryComponent implements OnInit {
 
   category: Category;
   title: String = "Edit Category";
+  faArrowLeft = faArrowLeft;
 
   constructor(
     private route: ActivatedRoute,

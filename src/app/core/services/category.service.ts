@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Category } from "../interface/category";
 import { delay } from "rxjs/operators";
 import { Observable, tap, catchError, of } from "rxjs";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -18,7 +19,7 @@ export class CategoryService {
 
   categories: Category[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private snackbar: MatSnackBar) {}
 
   getCategories(): Observable<Category[]> {
     return this.http
@@ -28,7 +29,7 @@ export class CategoryService {
 
   getCategory(id: Number): Observable<Category> {
     return this.http.get<Category>(`${this.apiURL}/categories/${id}`).pipe(
-      tap((_) => this.log(`fetched category id=${id}`)),
+      tap((_) => console.log(`fetched category id=${id}`)),
       catchError(this.handleError<Category>(`getCategory id=${id}`))
     );
   }
@@ -51,19 +52,18 @@ export class CategoryService {
 
   private handleError<T>(operation = "operation", result?: T) {
     return (error: any): Observable<T> => {
-      // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
 
-      // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
+      this.log(`${operation} failed: ${error.error}`);
 
-      // Let the app keep running by returning an empty result.
       return of(result as T);
     };
   }
 
   /** Log a HeroService message with the MessageService */
   private log(message: string) {
-    console.log(`HeroService: ${message}`);
+    this.snackbar.open(message, "Error", {
+      duration: 3500,
+    });
   }
 }
