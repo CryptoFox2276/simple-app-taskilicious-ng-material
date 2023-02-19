@@ -3,7 +3,7 @@
     <h2>{{ title }}</h2>
   </div>
   <div class="content-body">
-    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="taskForm" >
       <section>
         <mat-form-field class="form-field">
           <mat-label>New Task Name</mat-label>
@@ -25,7 +25,59 @@
           </mat-select>
         </mat-form-field>
       </section>
-      <button mat-raised-button color="primary" class="md-button" type="submit">
+      <section>
+        <ng-container *ngIf="teamMembers.length > 0">
+          <div *ngFor="let member of teamMembers" class="checkbox">
+            <mat-checkbox
+              (change)="onCheckMember($event, member.id)"
+              [checked]="onCheckStatus(member.id)"
+            >
+              <img class="image" [src]="member.avatar" width="30" height="30" />
+              <span>{{ member.name }}</span>
+            </mat-checkbox>
+          </div>
+        </ng-container>
+      </section>
+      <section>
+        <img class="task-image" [src]="fileUrl" alt="task_image" width="30" height="30" style="float: left;"/>
+        <input
+          type="file"
+          class="file-input"
+          [accept]="requiredFileType"
+          (change)="onFileSelected($event)"
+          #fileUpload
+        />
+
+        <div class="file-upload">
+          {{ fileName || "No file yet." }}
+
+          <button
+            mat-mini-fab
+            color="primary"
+            class="upload-btn"
+            (click)="fileUpload.click()"
+          >
+            <mat-icon>attach_file</mat-icon>
+          </button>
+        </div>
+        <div class="progress">
+          <mat-progress-bar
+            class="progress-bar"
+            mode="determinate"
+            [value]="uploadProgress"
+            *ngIf="uploadProgress"
+          >
+          </mat-progress-bar>
+
+          <mat-icon
+            class="cancel-upload"
+            (click)="cancelUpload()"
+            *ngIf="uploadProgress"
+            >delete_forever</mat-icon
+          >
+        </div>
+      </section>
+      <button mat-raised-button color="primary" class="md-button" type="button" (click)="onSubmit()">
         Submit
       </button>
     </form>

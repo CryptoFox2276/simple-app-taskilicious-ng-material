@@ -12,6 +12,11 @@ import { MatInputModule } from "@angular/material/input";
 import { MatTableModule } from "@angular/material/table";
 import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatCheckboxModule } from "@angular/material/checkbox"
+import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+
 
 import { TaskComponent } from "./task/task.component";
 
@@ -42,6 +47,11 @@ const routes: Routes = [
     MatFormFieldModule,
     MatTableModule,
     MatSelectModule,
+    MatCheckboxModule,
+    MaterialFileInputModule,
+    MatProgressBarModule,
+    MatSnackBarModule,
+
   ],
   exports: [RouterModule],
 })

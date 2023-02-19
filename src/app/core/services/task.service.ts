@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Category } from "../interface/category";
 import { TASK } from "../interface/task";
+import { Team } from "../interface/team";
 import { MOCKCATEGORIES } from "./mock_data";
 import { delay } from "rxjs/operators";
 import { Observable, tap, catchError, of } from "rxjs";
@@ -43,9 +44,9 @@ export class TaskService {
       .pipe(catchError(this.handleError("addTask", newTask)));
   }
 
-  updateTask(task_id: number, updatedTask: any) {
+  updateTask(updatedTask: TASK) {
     return this.http
-      .put<TASK>(`${this.apiURL}/tasks/${task_id}`, updatedTask, httpOptions)
+      .put<TASK>(`${this.apiURL}/tasks/${updatedTask.id}`, updatedTask, httpOptions)
       .pipe(catchError(this.handleError("addTask", updatedTask)));
   }
 
@@ -53,6 +54,14 @@ export class TaskService {
     return this.http
       .delete<TASK>(`${this.apiURL}/tasks/${task_id}`, httpOptions)
       .pipe(catchError(this.handleError("removeTask", task_id)));
+  }
+
+  getTeamMembers() {
+    return this.http.get<Team[]>(`${this.apiURL}/team-members`).pipe(
+      delay(500),
+      tap((_) => this.log(`fetched tasks`)),
+      catchError(this.handleError<Team[]>(`getTasks Error`))
+    );
   }
 
   private handleError<T>(operation = "operation", result?: T) {

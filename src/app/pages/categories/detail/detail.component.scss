@@ -24,6 +24,16 @@
 
 table {
   width: 100%;
+  
+  th {
+    text-align: center;
+  }
+
+  td {
+    width: 100%;
+    max-width: 25vw;
+    overflow-x: auto;
+  }
 }
 mat-spinner {
   width: 30px;

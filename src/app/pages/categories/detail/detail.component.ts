@@ -7,11 +7,14 @@ import { CategoryService } from "src/app/core/services/category.service";
 import { TaskService } from "src/app/core/services/task.service";
 import { TASK } from "src/app/core/interface/task";
 import { TaskDataSource } from "src/app/core/task-data-source";
+import { Team } from "src/app/core/interface/team";
 
 export interface TaskTable {
   name: string,
   id: number,
 }
+
+const defaultTaskImageUrl = "https://ucarecdn.com/7965aada-226e-47e3-b4e8-822e3fb79485/";
 
 @Component({
   selector: "app-detail",
@@ -21,10 +24,11 @@ export interface TaskTable {
 export class DetailComponent implements OnInit {
   title = "Category Detail";
   faArrowLeft = faArrowLeft;
-  displayedColumns: string[] = ["name", "id", "edit", "remove"];
+  displayedColumns: string[] = ["image","name", "id", "teammember","edit", "remove"];
 
   category: Category;
   tasks: TASK[] = [];
+  teamMembers: Team[] = [];
   dataSource:TaskDataSource;
 
   constructor(
@@ -44,11 +48,12 @@ export class DetailComponent implements OnInit {
   async ngOnInit() {
     await this.getCategory();
     await this.getTasks();
+    this.getTeamMembers();
   }
 
   ngOnChange(dataSource:SimpleChange) {
-    console.log(dataSource);
   }
+  
   getCategory() {
     const id = Number(
       this.route.snapshot.paramMap.has("id")
@@ -71,6 +76,26 @@ export class DetailComponent implements OnInit {
 
     if (id > 0) {
       this.dataSource.loadTasks(id);
+    }
+  }
+
+  getTeamMembers() {
+    this.taskService.getTeamMembers().subscribe(res => {
+      this.teamMembers = res;
+    })
+  }
+
+  getAvatar(member_id:number) {
+    const member = this.teamMembers.find(res => res.id === member_id);
+    if(member) return member.avatar;
+    else return null;
+  }
+
+  getTaskImage(res: TASK) {
+    if(res.imageUrl) {
+      return res.imageUrl
+    } else {
+      return defaultTaskImageUrl;
     }
   }
 
