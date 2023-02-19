@@ -1,8 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Category } from "../interface/category";
-import { TASK } from "../interface/task";
-import { MOCKCATEGORIES } from "./mock_data";
 import { delay } from "rxjs/operators";
 import { Observable, tap, catchError, of } from "rxjs";
 
@@ -26,7 +24,6 @@ export class CategoryService {
     return this.http
       .get<Category[]>(`${this.apiURL}/categories`)
       .pipe(delay(500));
-    // return MOCKCATEGORIES;
   }
 
   getCategory(id: Number): Observable<Category> {
@@ -50,14 +47,6 @@ export class CategoryService {
         httpOptions
       )
       .pipe(catchError(this.handleError("updateCategory", category)));
-  }
-
-  getTasks(): Observable<TASK[]> {
-    return this.http.get<TASK[]>(`${this.apiURL}/tasks`).pipe(
-      delay(500),
-      tap((_) => this.log(`fetched tasks`)),
-      catchError(this.handleError<TASK[]>(`getTasks Error`))
-    );
   }
 
   private handleError<T>(operation = "operation", result?: T) {

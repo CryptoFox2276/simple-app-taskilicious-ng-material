@@ -1,20 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { CategoriesComponent } from './categories.component';
-import { CategoryComponent } from './category/category.component';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from "@angular/material/button";
 import { MatMenuModule } from '@angular/material/menu';
-// import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
-import { MatTableModule } from '@angular/material/table'  
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { CategoriesComponent } from './categories.component';
+import { CategoryComponent } from './category/category.component';
 import { DetailComponent } from './detail/detail.component';
+
+
+
 
 const routes: Routes = [
   {
@@ -53,6 +56,7 @@ const routes: Routes = [
     MatMenuModule,
     MatCardModule,
     MatTableModule,
+    MatProgressSpinnerModule,
 
     RouterModule.forChild(routes)
   ],

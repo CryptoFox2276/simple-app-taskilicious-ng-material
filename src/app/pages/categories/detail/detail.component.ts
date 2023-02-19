@@ -1,10 +1,12 @@
 import { Location } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, SimpleChange } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Category } from "src/app/core/interface/category";
 import { CategoryService } from "src/app/core/services/category.service";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { TaskService } from "src/app/core/services/task.service";
 import { TASK } from "src/app/core/interface/task";
+import { TaskDataSource } from "src/app/core/task-data-source";
 
 export interface TaskTable {
   name: string,
@@ -19,28 +21,34 @@ export interface TaskTable {
 export class DetailComponent implements OnInit {
   title = "Category Detail";
   faArrowLeft = faArrowLeft;
-  displayedColumns: string[] = ["name", "id"];
+  displayedColumns: string[] = ["name", "id", "edit", "remove"];
 
   category: Category;
   tasks: TASK[] = [];
-  dataSource:TaskTable[] = [];
+  dataSource:TaskDataSource;
 
   constructor(
     private route: ActivatedRoute,
     private categoryService: CategoryService,
-    private location: Location
+    private taskService: TaskService,
+    private location: Location,
   ) {
     this.category = {
       id: -1,
       name: "",
     };
+    this.dataSource = new TaskDataSource(this.taskService);
+    
   }
 
-  ngOnInit(): void {
-    this.getCategory();
-    this.getTasks();
+  async ngOnInit() {
+    await this.getCategory();
+    await this.getTasks();
   }
 
+  ngOnChange(dataSource:SimpleChange) {
+    console.log(dataSource);
+  }
   getCategory() {
     const id = Number(
       this.route.snapshot.paramMap.has("id")
@@ -62,22 +70,17 @@ export class DetailComponent implements OnInit {
     );
 
     if (id > 0) {
-      this.categoryService.getTasks().subscribe((res) => {
-        this.tasks = res;
-        console.log(res);
-        console.log(typeof id);
-        console.log(typeof Number(res[0].categoryId));
-        const filteredRes = res.filter((item) => {
-          return Number(item.categoryId) === id;
-        });
-        console.log(filteredRes);
-        filteredRes.map((item) => {
-          return this.dataSource.push({
-            name: item.name,
-            id: item.categoryId,
-          });
-        });
-      });
+      this.dataSource.loadTasks(id);
     }
+  }
+
+  onRemoveTask(task_id: number) {
+    this.taskService.removeTask(task_id).subscribe(res => {
+      this.getTasks();
+    })
+  }
+
+  onEditTask(task_id: number) {
+    window.location.href = '/tasks/edit/' + task_id;
   }
 }
